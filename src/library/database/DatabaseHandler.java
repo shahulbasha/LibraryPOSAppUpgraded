@@ -38,6 +38,11 @@ public class DatabaseHandler {
 		return collection;
 	}
 	
+	public MongoCollection<Document> setUpMemberCollection() {
+		MongoCollection<Document> collection = this.getMongoDatabase().getCollection("member");
+		return collection;
+	}
+	
 	//method checks for availability of a particular document in a collection
 	public boolean executeAction(String bookTitle) {
 		MongoCollection<Document> collection=setUpBookCollection();
@@ -66,6 +71,22 @@ public class DatabaseHandler {
 		}catch(MongoServerException e) {
 			e.printStackTrace();
 		}
+		return true;
+	}
+
+	public boolean insertMember(Document doc) {
+		try {
+			MongoCollection<Document> memberCollection = setUpMemberCollection();
+			memberCollection.createIndex(new Document("memberID", 1), new IndexOptions().unique(true));
+			memberCollection.insertOne(doc);
+			System.out.println("Collection Inserted"+memberCollection.count());
+		} catch (MongoWriteException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}catch(MongoServerException e) {
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 
