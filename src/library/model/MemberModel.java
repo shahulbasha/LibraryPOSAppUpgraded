@@ -1,5 +1,8 @@
 package library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class MemberModel {
 
 	private String memberId;
