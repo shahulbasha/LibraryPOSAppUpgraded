@@ -49,7 +49,7 @@ public class LibraryMemberListController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		dbHandler=new DatabaseHandler();
+		dbHandler=DatabaseHandler.getInstance();
 		initCol();
 		loadData();
 		

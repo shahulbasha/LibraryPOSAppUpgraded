@@ -44,7 +44,7 @@ public class LibraryBookListController implements Initializable  {
     @FXML
     private TableColumn<BookModel, String> availabilityColumn;
     
-    DatabaseHandler databaseHandler=new DatabaseHandler();
+    DatabaseHandler databaseHandler=DatabaseHandler.getInstance();
     ObservableList<BookModel> bookList=FXCollections.observableArrayList();
     ObjectMapper mapper=new ObjectMapper();
     

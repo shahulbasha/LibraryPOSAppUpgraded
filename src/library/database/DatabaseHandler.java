@@ -1,27 +1,33 @@
 package library.database;
 
-import java.util.List;
+import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.Document;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoServerException;
 import com.mongodb.MongoWriteException;
-import com.mongodb.WriteConcern;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.InsertOneOptions;
 
 public class DatabaseHandler {
-	
+	static DatabaseHandler handler=null;
 	private MongoClient mongoClient=new MongoClient("localhost",27017);
 	
-	public DatabaseHandler() {
+	private DatabaseHandler() {
 		setUpBookCollection();
+		setUpMemberCollection();
 	}
+	
+	public static DatabaseHandler getInstance() {
+		if(handler==null) {
+			return new DatabaseHandler();
+		}
+		return handler;
+	}
+	
 	
 	public MongoClient getMongoConnection() {
 		return this.mongoClient;
@@ -42,6 +48,17 @@ public class DatabaseHandler {
 		MongoCollection<Document> collection = this.getMongoDatabase().getCollection("member");
 		return collection;
 	}
+	
+/*	public void retrieveMemberById(String memberId){
+		MongoCollection<Document> memberCollection = setUpMemberCollection();
+		Document doc = memberCollection.find(eq("memberId",memberId)).first();
+		doc.toJson();
+		
+	}
+	
+	public void retrieveBookById(String bookId){
+		MongoCollection<Document> setUpBookCollection = setUpBookCollection();
+	}*/
 	
 	//method checks for availability of a particular document in a collection
 	public boolean executeAction(String bookTitle) {
