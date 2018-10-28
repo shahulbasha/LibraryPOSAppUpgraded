@@ -140,7 +140,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXButton buttonType="RAISED" stylesheets="@main.css" text="Issue" />
+                                          <JFXButton buttonType="RAISED" onAction="#loadIssueBook" stylesheets="@main.css" text="Issue" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -155,14 +155,14 @@
                            <children>
                               <BorderPane layoutX="74.0" layoutY="23.0" prefHeight="400.0" prefWidth="523.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <top>
-                                    <JFXTextField alignment="CENTER" prefHeight="25.0" prefWidth="100.0" promptText="Enter Book Id" BorderPane.alignment="CENTER">
+                                    <JFXTextField fx:id="bookSubmitRenew" alignment="CENTER" onAction="#loadBookSubmitRenewInfo" prefHeight="25.0" prefWidth="100.0" promptText="Enter Book Id" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets bottom="10.0" left="110.0" right="110.0" top="15.0" />
                                        </BorderPane.margin>
                                     </JFXTextField>
                                  </top>
                                  <center>
-                                    <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <ListView fx:id="issueRenewListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <padding>
                                           <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                        </padding>

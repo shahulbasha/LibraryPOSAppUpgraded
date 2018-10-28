@@ -84,7 +84,7 @@ public class LibraryBookListController implements Initializable  {
 		bookTitleColumn.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
 		authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
 		publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-		availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("isAvailable"));
+		availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
 
 		
 	}

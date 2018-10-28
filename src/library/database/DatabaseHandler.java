@@ -11,6 +11,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 
 public class DatabaseHandler {
 	static DatabaseHandler handler=null;
@@ -19,6 +20,7 @@ public class DatabaseHandler {
 	private DatabaseHandler() {
 		setUpBookCollection();
 		setUpMemberCollection();
+		setUpIssueBookCollection();
 	}
 	
 	public static DatabaseHandler getInstance() {
@@ -49,6 +51,10 @@ public class DatabaseHandler {
 		return collection;
 	}
 	
+	public MongoCollection<Document> setUpIssueBookCollection(){
+		MongoCollection<Document> collection = this.getMongoDatabase().getCollection("issueBook");
+		return collection;
+	}
 /*	public void retrieveMemberById(String memberId){
 		MongoCollection<Document> memberCollection = setUpMemberCollection();
 		Document doc = memberCollection.find(eq("memberId",memberId)).first();
@@ -90,11 +96,26 @@ public class DatabaseHandler {
 		}
 		return true;
 	}
+	
+	public boolean issueBook(Document document) {
+		try {
+		MongoCollection<Document> collection = setUpIssueBookCollection();
+		collection.createIndex(Indexes.ascending("bookId","memberId"));
+		collection.insertOne(document);
+	} catch (MongoWriteException e) {
+		System.out.println(e.getMessage());
+		return false;
+	}catch(MongoServerException e) {
+		e.printStackTrace();
+	}
+	return true;
+	}
 
 	public boolean insertMember(Document doc) {
 		try {
+			System.out.println("About to insert");
 			MongoCollection<Document> memberCollection = setUpMemberCollection();
-			memberCollection.createIndex(new Document("memberID", 1), new IndexOptions().unique(true));
+			memberCollection.createIndex(new Document("memberId", 1), new IndexOptions().unique(true));
 			memberCollection.insertOne(doc);
 			System.out.println("Collection Inserted"+memberCollection.count());
 		} catch (MongoWriteException e) {
