@@ -175,7 +175,7 @@
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin></JFXButton>
-                                          <JFXButton prefHeight="25.0" prefWidth="94.0" stylesheets="@main.css" text="Submission" />
+                                          <JFXButton onAction="#loadOnSubmission" prefHeight="25.0" prefWidth="94.0" stylesheets="@main.css" text="Submission" />
                                        </children>
                                     </HBox>
                                  </bottom>

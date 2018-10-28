@@ -77,6 +77,8 @@ public class MainController implements Initializable{
     @FXML
     private ListView<String> issueRenewListView;
     
+    boolean isReadyForSubmission=false;
+    
 
 
 	@FXML
@@ -242,7 +244,7 @@ public class MainController implements Initializable{
     
     @FXML
     void loadBookSubmitRenewInfo(ActionEvent event) {
-    	
+    	isReadyForSubmission=false;
         ObservableList<String> issueRenewData=FXCollections.observableArrayList();
         
     	String bookId=bookSubmitRenew.getText();
@@ -279,6 +281,7 @@ public class MainController implements Initializable{
 			issueRenewData.add("Member Contact : "+memberModel.getEmailId());
 			
 			issueRenewListView.getItems().setAll(issueRenewData);
+			isReadyForSubmission=true;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -291,6 +294,53 @@ public class MainController implements Initializable{
 		}
     	
 
+    }
+    
+    @FXML
+    void loadOnSubmission(ActionEvent event) {
+    	System.out.println(isReadyForSubmission);
+    	if(isReadyForSubmission) {
+    		String bookId=bookSubmitRenew.getText();
+    		
+        	Alert alert=new Alert(AlertType.CONFIRMATION);
+        	alert.setTitle("Issue Confirmation");
+        	alert.setContentText("Are you sure you want to submit the book "+bookId);
+        	Optional<ButtonType> response = alert.showAndWait();
+        	
+        	if(response.get()==ButtonType.OK) {
+
+    		MongoCollection<Document> issueBookCollection = DatabaseHandler.getInstance().setUpIssueBookCollection();
+    		MongoCollection<Document> bookCollection = DatabaseHandler.getInstance().setUpBookCollection();
+    		try {
+    		issueBookCollection.deleteOne(eq("bookId",bookId));
+    		bookCollection.updateOne(eq("bookId",bookId), new Document("$set" ,new Document("available",false)));
+    		Alert alert2=new Alert(AlertType.INFORMATION);
+    		alert2.setTitle("Book Submission");
+    		alert2.setContentText("Book Submitted successfully");
+    		alert2.showAndWait();
+
+    		}
+    		catch(Exception e) {
+        		Alert alert3=new Alert(AlertType.INFORMATION);
+        		alert3.setTitle("Book Submission");
+        		alert3.setContentText("Book Submission failed. Please try again later");
+        		alert3.showAndWait();
+    		}
+    		isReadyForSubmission=false;
+    		issueRenewListView.getItems().clear();
+    		bookSubmitRenew.clear();
+    		
+    	}
+
+    	}
+    	else {
+    		Alert alert1=new Alert(AlertType.ERROR);
+    		alert1.setTitle("Book Submission");
+    		alert1.setContentText("Please select a book to submit and try again later");
+    		alert1.showAndWait();
+    		return;
+    	}
+    	
     }
 
 }
