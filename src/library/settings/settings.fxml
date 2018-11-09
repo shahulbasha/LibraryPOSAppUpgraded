@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="351.0" stylesheets="@../../resources/common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.settings.SettingsController">
+   <children>
+      <VBox prefHeight="212.0" prefWidth="351.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXTextField fx:id="fine" labelFloat="true" promptText="Fine per Day">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="days" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="No of Days without fine">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="username" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="Username">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXPasswordField fx:id="password" labelFloat="true" promptText="Password">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </JFXPasswordField>
+         </children>
+      </VBox>
+      <HBox layoutX="14.0" layoutY="192.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="190.0">
+         <children>
+            <JFXButton onAction="#handleSave" prefHeight="100.0" prefWidth="200.0" text="Save" />
+            <JFXButton layoutX="10.0" layoutY="10.0" onAction="#handleCancel" prefHeight="100.0" prefWidth="200.0" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

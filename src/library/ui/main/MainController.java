@@ -2,6 +2,8 @@ package library.ui.main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -259,7 +261,7 @@ public class MainController implements Initializable{
 
     	try {
         	Document doc = issueBookCollection.find(eq("bookId",bookId)).first();
-        	System.out.println(doc.toJson());
+        //	System.out.println(doc.toJson());
         	Document doc1 = bookCollection.find(eq("bookId",bookId)).first();
         	System.out.println("****************************************");
 			IssueBookModel issueBook = mapper.readValue(doc.toJson(), IssueBookModel.class);
@@ -270,15 +272,15 @@ public class MainController implements Initializable{
 			
 			issueRenewData.add("Issue Date and Time is "+issueBook.getDate().toString());
 			issueRenewData.add("Renew Count : "+issueBook.getRenewCount());
-			issueRenewData.add("Book Information :");
-			issueRenewData.add("Book ID : "+bookModel.getBookId());
-			issueRenewData.add("Book Name : "+bookModel.getBookTitle());
-			issueRenewData.add("Author : "+bookModel.getAuthor());
-			issueRenewData.add("Publisher : "+bookModel.getPublisher());
-			issueRenewData.add("Member Information :");
-			issueRenewData.add("Member ID : "+issueBook.getMemberId());
-			issueRenewData.add("Member Name : "+memberModel.getMemberName());
-			issueRenewData.add("Member Contact : "+memberModel.getEmailId());
+			issueRenewData.add("BOOK INFORMATION :");
+			issueRenewData.add("	Book ID : "+bookModel.getBookId());
+			issueRenewData.add("	Book Name : "+bookModel.getBookTitle());
+			issueRenewData.add("	Author : "+bookModel.getAuthor());
+			issueRenewData.add("	Publisher : "+bookModel.getPublisher());
+			issueRenewData.add("MEMBER INFORMATION :");
+			issueRenewData.add("	Member ID : "+issueBook.getMemberId());
+			issueRenewData.add("	Member Name : "+memberModel.getMemberName());
+			issueRenewData.add("	Member Contact : "+memberModel.getEmailId());
 			
 			issueRenewListView.getItems().setAll(issueRenewData);
 			isReadyForSubmission=true;
@@ -321,7 +323,7 @@ public class MainController implements Initializable{
 
     		}
     		catch(Exception e) {
-        		Alert alert3=new Alert(AlertType.INFORMATION);
+        		Alert alert3=new Alert(AlertType.ERROR);
         		alert3.setTitle("Book Submission");
         		alert3.setContentText("Book Submission failed. Please try again later");
         		alert3.showAndWait();
@@ -340,6 +342,69 @@ public class MainController implements Initializable{
     		alert1.showAndWait();
     		return;
     	}
+    	
+    }
+    
+    @FXML
+    void loadRenew(ActionEvent event) {
+    	
+		if(isReadyForSubmission) {
+    	Alert alert=new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Renew Confirmation");
+    	alert.setContentText("Are you sure you want to renew the book "+bookSubmitRenew.getText());
+    	Optional<ButtonType> response = alert.showAndWait();
+    	ObjectMapper mapper=new ObjectMapper();
+    	
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setLenient(false);
+        String formattedDate = sdf.format(new Date());
+    	
+    	if(response.get()==ButtonType.OK) {
+    		MongoCollection<Document> issueBookCollection = DatabaseHandler.getInstance().setUpIssueBookCollection();
+    		Document doc = issueBookCollection.find(eq("bookId",bookSubmitRenew.getText())).first();
+    		IssueBookModel model;
+			try {
+				model = mapper.readValue(doc.toJson(), IssueBookModel.class);
+				issueBookCollection.updateOne(eq("bookId",bookSubmitRenew.getText()),new Document("$set",new Document("date",formattedDate).append("renewCount", model.getRenewCount()+1)));
+				
+	    		Alert alert2=new Alert(AlertType.INFORMATION);
+	    		alert2.setTitle("Book Renew");
+	    		alert2.setContentText("Book Renewed successfully");
+	    		alert2.showAndWait();
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+        		Alert alert3=new Alert(AlertType.ERROR);
+        		alert3.setTitle("Book Renew");
+        		alert3.setContentText("Book Renewal failed. Please try again later");
+        		alert3.showAndWait();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+        		Alert alert3=new Alert(AlertType.ERROR);
+        		alert3.setTitle("Book Renew");
+        		alert3.setContentText("Book Renewal failed. Please try again later");
+        		alert3.showAndWait();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+        		Alert alert3=new Alert(AlertType.ERROR);
+        		alert3.setTitle("Book Renew");
+        		alert3.setContentText("Book Renewal failed. Please try again later");
+        		alert3.showAndWait();
+			}
+    		
+    		
+    	}
+		}
+		else {
+    		Alert alert1=new Alert(AlertType.ERROR);
+    		alert1.setTitle("Book Renewal");
+    		alert1.setContentText("Please select a book to renew");
+    		alert1.showAndWait();
+    		return;
+			
+		}
     	
     }
 

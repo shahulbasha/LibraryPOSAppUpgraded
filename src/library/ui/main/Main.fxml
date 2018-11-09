@@ -171,7 +171,7 @@
                                  <bottom>
                                     <HBox alignment="CENTER" prefHeight="82.0" prefWidth="523.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <JFXButton prefHeight="25.0" prefWidth="77.0" stylesheets="@main.css" text="Renew">
+                                          <JFXButton onAction="#loadRenew" prefHeight="25.0" prefWidth="77.0" stylesheets="@main.css" text="Renew">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin></JFXButton>
