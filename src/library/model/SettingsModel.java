@@ -5,10 +5,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SettingsModel {
 	
@@ -21,7 +26,7 @@ public class SettingsModel {
 		finePerDay=2;
 		noOfDays=14;
 		username="admin";
-		password="admin";
+		setPassword("admin");
 		
 	}
 
@@ -54,7 +59,7 @@ public class SettingsModel {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
 	public static void initConfig() {
@@ -89,6 +94,29 @@ public class SettingsModel {
 		}
 		
 		return settings;
+		
+	}
+	
+	public static void writeToFile(SettingsModel model) {
+		ObjectMapper mapper=new ObjectMapper();
+		FileWriter writer;
+		try {
+			writer = new FileWriter(new File("config.txt"));
+			mapper.writeValue(writer, model);
+			Alert alert=new Alert(AlertType.INFORMATION);
+			alert.setContentText("Settings saved sucessfully");
+			alert.setTitle("Success");
+			alert.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Alert alert=new Alert(AlertType.ERROR);
+			alert.setContentText("Settings save failed");
+			alert.setTitle("Failure");
+			alert.showAndWait();
+		}
+		
+		
 		
 	}
 

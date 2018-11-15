@@ -9,6 +9,8 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import library.model.SettingsModel;
 
 public class SettingsController implements Initializable {
@@ -27,11 +29,18 @@ public class SettingsController implements Initializable {
 
     @FXML
     void handleCancel(ActionEvent event) {
-
+    	((Stage)days.getScene().getWindow()).close();
     }
 
     @FXML
     void handleSave(ActionEvent event) {
+    	SettingsModel model=SettingsModel.getModel();
+    	model.setFinePerDay(Integer.parseInt(fine.getText()));
+    	model.setNoOfDays(Integer.parseInt(days.getText()));
+    	model.setUsername(username.getText());
+    	model.setPassword(password.getText());
+    	
+    	SettingsModel.writeToFile(model);
 
     }
 

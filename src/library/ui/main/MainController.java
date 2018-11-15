@@ -106,7 +106,7 @@ public class MainController implements Initializable{
 
     @FXML
     void loadSettings(ActionEvent event) {
-
+    	loadWindow("/library/settings/settings.fxml", "Settings");
     }
     
     @FXML
