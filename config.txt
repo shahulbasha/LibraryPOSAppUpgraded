@@ -1,1 +1,1 @@
-{"finePerDay":2,"noOfDays":14,"username":"admin","password":"$2a$10$rwVmQDTL8XtTGn7kEhKjteE9xD7kviw/n4ryqewKSkpcx2TUGyb/."}
+{"finePerDay":2,"noOfDays":14,"username":"admin","password":"$2a$10$utIStycgGySt7r7GAmJB0O4q.tT1//A3DyJhAa0iA2.u412J5H4kS"}

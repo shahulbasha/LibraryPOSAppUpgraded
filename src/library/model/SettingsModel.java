@@ -1,6 +1,7 @@
 package library.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class SettingsModel {
 		finePerDay=2;
 		noOfDays=14;
 		username="admin";
-		setPassword("admin");
+		password=BCrypt.hashpw("admin", BCrypt.gensalt());
 		
 	}
 
@@ -59,7 +60,7 @@ public class SettingsModel {
 	}
 
 	public void setPassword(String password) {
-		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+		this.password = password;
 	}
 	
 	public static void initConfig() {

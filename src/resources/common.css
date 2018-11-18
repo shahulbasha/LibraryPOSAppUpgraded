@@ -6,3 +6,8 @@
 .jfx-button:hover{
 	-fx-background-color: #bd081c;
 }
+
+.label {
+	-fx-background-color: black;
+	-fx-text-fill : white;
+}

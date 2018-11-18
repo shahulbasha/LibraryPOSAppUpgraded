@@ -3,6 +3,8 @@ package library.settings;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
@@ -38,7 +40,7 @@ public class SettingsController implements Initializable {
     	model.setFinePerDay(Integer.parseInt(fine.getText()));
     	model.setNoOfDays(Integer.parseInt(days.getText()));
     	model.setUsername(username.getText());
-    	model.setPassword(password.getText());
+    	model.setPassword(BCrypt.hashpw(password.getText(), BCrypt.gensalt()));
     	
     	SettingsModel.writeToFile(model);
 
