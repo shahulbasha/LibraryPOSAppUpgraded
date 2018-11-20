@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import library.model.SettingsModel;
 import library.ui.main.MainController;
+import library.util.LibraryUtil;
 
 public class LoginController implements Initializable {
 	
@@ -76,6 +77,8 @@ public class LoginController implements Initializable {
 				stage.setTitle(title);
 				stage.setScene(scene);
 				stage.show();
+				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -34,8 +34,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,8 +45,16 @@ import library.database.DatabaseHandler;
 import library.model.BookModel;
 import library.model.IssueBookModel;
 import library.model.MemberModel;
+import library.util.LibraryUtil;
 
 public class MainController implements Initializable{
+	
+    @FXML
+    private StackPane rootPane;
+
+    @FXML
+    private MenuItem close;
+    
     @FXML
     private HBox book_info;
 
@@ -174,6 +184,8 @@ public class MainController implements Initializable{
 			stage.setTitle(title);
 			stage.setScene(scene);
 			stage.show();
+			
+			LibraryUtil.setStageIcon(stage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -406,6 +418,51 @@ public class MainController implements Initializable{
 			
 		}
     	
+    }
+    
+    
+    @FXML
+    void handleClose(ActionEvent event) {
+    	((Stage)rootPane.getScene().getWindow()).close();
+    }
+    
+    
+    @FXML
+    void handleMenuAddBook(ActionEvent event) {
+    	
+    	loadWindow("/library/ui/addbook/LibraryAddBook.fxml", "Add New Book");
+    	
+    }
+
+    @FXML
+    void handleMenuAddMember(ActionEvent event) {
+    	loadWindow("/library/ui/addmember/LibraryAddMember.fxml", "Add New Member");
+
+    }
+    
+    @FXML
+    void handleFullscreenToggle(ActionEvent event) {
+	    Stage stage=(Stage)rootPane.getScene().getWindow();
+	    stage.setFullScreen(!stage.isFullScreen());
+    }
+
+    @FXML
+    void handleMenuAbout(ActionEvent event) {
+
+    	
+    }
+    
+
+	
+    @FXML
+    void handleMenuViewBook(ActionEvent event) {
+    	loadWindow("/library/ui/listbook/LibraryBookList.fxml", "View Book List");
+    }
+
+    @FXML
+    void handleMenuViewMember(ActionEvent event) {
+    	loadWindow("/library/ui/listmember/LibraryMemberList.fxml", "View Member List");
+
     }
 
 }

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import library.database.DatabaseHandler;
+import library.util.LibraryUtil;
 
 public class MainApplication extends Application {
 
@@ -24,6 +25,8 @@ public class MainApplication extends Application {
 		primaryStage.setTitle("Library Checkout Application");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		LibraryUtil.setStageIcon(primaryStage);
 		
 		
 		
