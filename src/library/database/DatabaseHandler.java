@@ -12,6 +12,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.DeleteResult;
+
+import library.model.BookModel;
+import library.model.MemberModel;
 
 public class DatabaseHandler {
 	static DatabaseHandler handler=null;
@@ -113,11 +118,11 @@ public class DatabaseHandler {
 
 	public boolean insertMember(Document doc) {
 		try {
-			System.out.println("About to insert");
+		//	System.out.println("About to insert");
 			MongoCollection<Document> memberCollection = setUpMemberCollection();
 			memberCollection.createIndex(new Document("memberId", 1), new IndexOptions().unique(true));
 			memberCollection.insertOne(doc);
-			System.out.println("Collection Inserted"+memberCollection.count());
+		//	System.out.println("Collection Inserted"+memberCollection.count());
 		} catch (MongoWriteException e) {
 			System.out.println(e.getMessage());
 			return false;
@@ -127,5 +132,43 @@ public class DatabaseHandler {
 
 		return true;
 	}
+	
+	public boolean deleteBook(BookModel model) {
+		MongoCollection<Document> bookCollection = setUpBookCollection();
+		DeleteResult deleteOne = bookCollection.deleteOne(new Document("bookId", model.getBookId()));	
+		
+		if(deleteOne.getDeletedCount()==1) {
+			return true;
+		}
+		return false;
+		
+	}
+	
+	
+	public boolean deleteMember(MemberModel model) {
+		MongoCollection<Document> memberCollection = setUpMemberCollection();
+		DeleteResult deleteOne = memberCollection.deleteOne(eq("memberId",model.getMemberId()));
+		
+		if(deleteOne.getDeletedCount()==1) {
+			return true;
+		}
+		return false;
+		
+	}
 
+	
+	public boolean isBookAlreadyIssued(BookModel model) {
+		MongoCollection<Document> issueBookCollection = setUpIssueBookCollection();
+		long count = issueBookCollection.count(eq("bookId",model.getBookId()));
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
+
+	public void handleEditOperation(BookModel bookModel) {
+		MongoCollection<Document> bookCollection = setUpBookCollection();
+		//bookCollection.updateMany(eq("bookId",bookModel.getBookId()),new Document("bookTitle",bookModel.getBookTitle(),"author",bookModel.getAuthor(),"publisher",bookModel.getPublisher()),new UpdateOptions().upsert(true));
+		
+	}
 }

@@ -2,6 +2,7 @@ package library.ui.listbook;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.bson.Document;
@@ -13,14 +14,26 @@ import com.mongodb.client.MongoCollection;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.database.DatabaseHandler;
 import library.model.BookModel;
+import library.ui.addbook.LibraryAddBookController;
+import library.ui.main.MainController;
+import library.util.LibraryUtil;
 
 public class LibraryBookListController implements Initializable  {
 	@FXML
@@ -75,7 +88,7 @@ public class LibraryBookListController implements Initializable  {
 			}
 		}
 		
-		bookModel.getItems().setAll(bookList);
+		bookModel.setItems(bookList);
 	}
 
 
@@ -88,5 +101,94 @@ public class LibraryBookListController implements Initializable  {
 
 		
 	}
+	
+	
+    @FXML
+    void deleteBookfromView(ActionEvent event) {
+    	
+    	BookModel selectedItem = bookModel.getSelectionModel().getSelectedItem();
+    	
+
+    	if(!DatabaseHandler.getInstance().isBookAlreadyIssued(selectedItem)) {
+    	if(selectedItem!=null) {
+    		
+    		Alert alert=new Alert(AlertType.CONFIRMATION);
+    		alert.setTitle("Delete Book");
+    		alert.setContentText("Are you sure you want to delete the book "+selectedItem.getBookTitle());
+    		
+    		Optional<ButtonType> response = alert.showAndWait();
+    		if(response.get()==ButtonType.OK) {
+    			if(DatabaseHandler.getInstance().deleteBook(selectedItem)) {
+    	    		Alert alert2=new Alert(AlertType.INFORMATION);
+    	    		alert2.setTitle("Delete Success");
+    	    		alert2.setContentText("Book Deleted Successfully");
+    	    		alert2.showAndWait();
+    	    		
+    	    		bookList.remove(selectedItem);
+    			}
+    			else {
+    	    		Alert alert3=new Alert(AlertType.ERROR);
+    	    		alert3.setTitle("Delete Failure");
+    	    		alert3.setContentText("Please try delting after sometime");
+    	    		alert3.showAndWait();
+    			}
+    			
+    		}else {
+        		Alert alert1=new Alert(AlertType.INFORMATION);
+        		alert1.setTitle("Cancel");
+        		alert1.setContentText("Deletion Cancelled");
+    		}
+    	}
+    	else {
+    		Alert alert=new Alert(AlertType.ERROR);
+    		alert.setTitle("Select Book");
+    		alert.setContentText("No Book Selected");
+    		return;
+    	}
+    	}
+    	else {
+    		Alert alert=new Alert(AlertType.ERROR);
+    		alert.setTitle("Delete Book");
+    		alert.setContentText("This book cannot be deleted as it is already issued");
+    		return;
+    	}
+
+
+    }
+    
+    
+
+    @FXML
+    void editBook(ActionEvent event) {
+    	
+    	BookModel selectedItem = bookModel.getSelectionModel().getSelectedItem();
+    	
+		try {
+
+			FXMLLoader loader=new FXMLLoader(getClass().getResource("/library/ui/addbook/LibraryAddBook.fxml"));
+			Parent root=loader.load();
+			
+			LibraryAddBookController controller =(LibraryAddBookController) loader.getController();
+			controller.inflateUI(selectedItem);
+			Stage stage=new Stage(StageStyle.DECORATED);
+			Scene scene=new Scene(root);
+			stage.setTitle("Edit Book");
+			stage.setScene(scene);
+			stage.show();
+			
+			LibraryUtil.setStageIcon(stage);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+
+
+    }
+
+    
+    
+   
 
 }

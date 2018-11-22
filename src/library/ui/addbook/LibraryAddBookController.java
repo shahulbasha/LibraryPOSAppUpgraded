@@ -46,6 +46,8 @@ public class LibraryAddBookController implements Initializable {
     
     DatabaseHandler databaseHandler;
     
+    boolean isEditMode=Boolean.FALSE;
+    
     @FXML
     private AnchorPane rootPane;
 
@@ -72,6 +74,10 @@ public class LibraryAddBookController implements Initializable {
     		alert.setHeaderText(null);
     		alert.showAndWait();
     		return;
+    	}
+    	
+    	if(isEditMode) {
+    		DatabaseHandler.getInstance().handleEditOperation();
     	}
     	
     	BookModel bookModel=new BookModel(id,bookTitle,bookAuthor,bookPublisher,isAvailable);
@@ -115,6 +121,19 @@ public class LibraryAddBookController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		databaseHandler=DatabaseHandler.getInstance();
+	}
+	
+	public void inflateUI(BookModel model){
+		
+		isEditMode=Boolean.TRUE;
+		bookId.setText(model.getBookId());
+		bookName.setText(model.getBookTitle());
+		author.setText(model.getAuthor());
+		author.setText(model.getPublisher());
+		
+		bookId.setEditable(false);
+		
+		
 	}
     
 
