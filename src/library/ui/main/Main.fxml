@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -54,29 +55,44 @@
          <right>
             <VBox prefHeight="429.0" prefWidth="142.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#loadAddMember" prefHeight="100.0" prefWidth="143.0" text="Add Member">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#loadAddMember" prefHeight="137.0" prefWidth="142.0" text="Add Member">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="39.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/icons/add_mem.png" />
+                           </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadAddBook" prefHeight="100.0" prefWidth="143.0" text="Add Book">
+                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadAddBook" prefHeight="142.0" prefWidth="142.0" text="Add Book">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/icons/add_book.png" />
+                           </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadMemberList" prefHeight="100.0" prefWidth="143.0" text="View Member">
+                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadMemberList" prefHeight="140.0" prefWidth="142.0" text="View Member">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="42.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/icons/list_mem.png" />
+                           </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadBookList" prefHeight="100.0" prefWidth="143.0" text="View Book">
+                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadBookList" prefHeight="146.0" prefWidth="142.0" text="View Book">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="41.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/icons/list_book.png" />
+                           </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadSettings" prefHeight="100.0" prefWidth="143.0" text="Settings">
+                  <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadSettings" prefHeight="139.0" prefWidth="142.0" text="Settings">
                      <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="45.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/icons/settings.png" />
+                           </image></ImageView>
                      </graphic>
                   </Button>
                </children>
@@ -93,7 +109,7 @@
                                  <children>
                                     <HBox fx:id="book_info" alignment="CENTER" prefHeight="152.0" prefWidth="523.0" styleClass="hbox-issue" stylesheets="@main.css">
                                        <children>
-                                          <TextField fx:id="bookId" onAction="#loadBookInfo" promptText="Book ID">
+                                          <TextField fx:id="bookId" onAction="#loadBookInfo" prefHeight="25.0" prefWidth="171.0" promptText="Book ID">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
@@ -123,12 +139,12 @@
                                     </HBox>
                                     <HBox fx:id="member_info" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="152.0" prefWidth="523.0" styleClass="hbox-issue" stylesheets="@main.css">
                                        <children>
-                                          <TextField fx:id="memberId" onAction="#loadMemberInfo" prefHeight="25.0" prefWidth="112.0" promptText="Member ID">
+                                          <TextField fx:id="memberId" onAction="#loadMemberInfo" prefHeight="25.0" prefWidth="175.0" promptText="Member ID">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <VBox alignment="CENTER" prefHeight="97.0" prefWidth="349.0">
+                                          <VBox alignment="CENTER" prefHeight="112.0" prefWidth="361.0">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                              </HBox.margin>
@@ -183,7 +199,7 @@
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin></JFXButton>
-                                          <JFXButton onAction="#loadOnSubmission" prefHeight="25.0" prefWidth="94.0" stylesheets="@main.css" text="Submission" />
+                                          <JFXButton onAction="#loadOnSubmission" prefHeight="25.0" prefWidth="94.0" stylesheets="@main.css" text="Return Book" />
                                        </children>
                                     </HBox>
                                  </bottom>

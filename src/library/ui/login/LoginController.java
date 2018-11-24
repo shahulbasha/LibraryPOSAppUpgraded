@@ -78,6 +78,7 @@ public class LoginController implements Initializable {
 				stage.setScene(scene);
 				stage.show();
 				
+				LibraryUtil.setStageIcon(stage);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

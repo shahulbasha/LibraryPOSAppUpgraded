@@ -327,7 +327,7 @@ public class MainController implements Initializable{
     		MongoCollection<Document> bookCollection = DatabaseHandler.getInstance().setUpBookCollection();
     		try {
     		issueBookCollection.deleteOne(eq("bookId",bookId));
-    		bookCollection.updateOne(eq("bookId",bookId), new Document("$set" ,new Document("available",false)));
+    		bookCollection.updateOne(eq("bookId",bookId), new Document("$set" ,new Document("available",true)));
     		Alert alert2=new Alert(AlertType.INFORMATION);
     		alert2.setTitle("Book Submission");
     		alert2.setContentText("Book Submitted successfully");

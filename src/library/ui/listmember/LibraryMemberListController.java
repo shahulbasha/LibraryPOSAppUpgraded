@@ -16,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
@@ -24,9 +27,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.database.DatabaseHandler;
 import library.model.BookModel;
 import library.model.MemberModel;
+import library.ui.addmember.LibraryAddMemberController;
+import library.util.LibraryUtil;
 
 public class LibraryMemberListController implements Initializable {
 
@@ -63,6 +70,7 @@ public class LibraryMemberListController implements Initializable {
 
 
 	private void loadData() {
+		list.clear();
 		MongoCollection<Document> memberCollection = dbHandler.setUpMemberCollection();
 		for (Document doc : memberCollection.find()) {
 			try {
@@ -137,5 +145,38 @@ public class LibraryMemberListController implements Initializable {
 	    	}
 
 	    }
+	 
+	 @FXML
+	 void refreshView(ActionEvent event) {
+		 loadData();
+	 }
+	 
+	 
+	 @FXML
+	 void editMemberDetails(ActionEvent event) {
+		 
+		 MemberModel selectedItem = tableView.getSelectionModel().getSelectedItem();
+		 FXMLLoader loader=new FXMLLoader(getClass().getResource("/library/ui/addmember/LibraryAddMember.fxml"));
+		 try {
+			Parent root = loader.load();
+			LibraryAddMemberController controller=(LibraryAddMemberController) loader.getController();
+			controller.inflateUI(selectedItem);
+			
+			Stage stage=new Stage(StageStyle.DECORATED);
+			Scene scene=new Scene(root);
+			stage.setTitle("Edit Member");
+			stage.setScene(scene);
+			stage.show();
+			
+			stage.setOnCloseRequest((e)->{
+				refreshView(new ActionEvent());
+			});
+			
+			LibraryUtil.setStageIcon(stage);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
 
 }

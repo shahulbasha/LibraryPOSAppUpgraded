@@ -70,7 +70,7 @@ public class LibraryBookListController implements Initializable  {
 	
 	
 	private void loadData() {
-
+    	bookList.clear();
 		MongoCollection<Document> bookCollection = databaseHandler.setUpBookCollection();
 		for (Document book : bookCollection.find()) {
 			try {
@@ -110,6 +110,7 @@ public class LibraryBookListController implements Initializable  {
     	
 
     	if(!DatabaseHandler.getInstance().isBookAlreadyIssued(selectedItem)) {
+    		System.out.println("Inside");
     	if(selectedItem!=null) {
     		
     		Alert alert=new Alert(AlertType.CONFIRMATION);
@@ -137,20 +138,22 @@ public class LibraryBookListController implements Initializable  {
         		Alert alert1=new Alert(AlertType.INFORMATION);
         		alert1.setTitle("Cancel");
         		alert1.setContentText("Deletion Cancelled");
+        		alert1.showAndWait();
     		}
     	}
     	else {
     		Alert alert=new Alert(AlertType.ERROR);
     		alert.setTitle("Select Book");
     		alert.setContentText("No Book Selected");
-    		return;
+    		alert.showAndWait();
     	}
     	}
     	else {
+    		System.out.println("Outside");
     		Alert alert=new Alert(AlertType.ERROR);
     		alert.setTitle("Delete Book");
     		alert.setContentText("This book cannot be deleted as it is already issued");
-    		return;
+    		alert.showAndWait();
     	}
 
 
@@ -176,6 +179,10 @@ public class LibraryBookListController implements Initializable  {
 			stage.setScene(scene);
 			stage.show();
 			
+			stage.setOnCloseRequest((e)->{
+				refreshView(new ActionEvent());
+			});
+			
 			LibraryUtil.setStageIcon(stage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -187,6 +194,12 @@ public class LibraryBookListController implements Initializable  {
 
     }
 
+    
+    @FXML
+    void refreshView(ActionEvent event) {
+
+    	loadData();
+    }
     
     
    

@@ -34,6 +34,8 @@ public class LibraryAddMemberController implements Initializable {
 	    private JFXTextField emailId;
 	    
 	    DatabaseHandler databaseHandler;
+	    
+	    boolean isEdit=Boolean.FALSE;
 
 	    @FXML
 	    void onAdd(ActionEvent event) {
@@ -53,6 +55,24 @@ public class LibraryAddMemberController implements Initializable {
 	    	
 	    	MemberModel memberModel=new MemberModel(id,name,phone,email);
 	    	ObjectMapper mapper=new ObjectMapper();
+	    	
+	    	if(isEdit) {
+	    		
+	    		boolean isSuccess = DatabaseHandler.getInstance().editMember(memberModel);
+	    		if(isSuccess) {
+	    			Alert alert=new Alert(AlertType.INFORMATION);
+	    			alert.setTitle("Member Edit");
+	    			alert.setContentText("Member Details Saved successfully");
+	    			alert.showAndWait();
+	    		}
+	    		else {
+	    			Alert alert=new Alert(AlertType.ERROR);
+	    			alert.setTitle("Member Edit");
+	    			alert.setContentText("Save Failed. Please try Later");
+	    			alert.showAndWait();
+	    		}
+	    		return;
+	    	}
 	    	
 	    	try {
 				String memberJSON = mapper.writeValueAsString(memberModel);
@@ -92,6 +112,17 @@ public class LibraryAddMemberController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		databaseHandler=DatabaseHandler.getInstance();
+	}
+	
+	public void inflateUI(MemberModel model) {
+		memberId.setText(model.getMemberId());
+		memberName.setText(model.getMemberName());
+		phoneNo.setText(model.getPhoneNo());
+		emailId.setText(model.getEmailId());
+		
+		memberId.setEditable(false);
+		
+		isEdit=Boolean.TRUE;
 	}
 
 }

@@ -76,11 +76,8 @@ public class LibraryAddBookController implements Initializable {
     		return;
     	}
     	
-    	if(isEditMode) {
-    		DatabaseHandler.getInstance().handleEditOperation();
-    	}
-    	
-    	BookModel bookModel=new BookModel(id,bookTitle,bookAuthor,bookPublisher,isAvailable);
+      	BookModel bookModel=new BookModel(id,bookTitle,bookAuthor,bookPublisher,isAvailable);   	
+  
     	ObjectMapper mapper=new ObjectMapper();
     	
     	bookModel.setAuthor(bookAuthor);
@@ -90,6 +87,22 @@ public class LibraryAddBookController implements Initializable {
     	bookModel.setAvailable(isAvailable);
     	
 
+    	if(isEditMode) {
+    			boolean handleEditOperation = DatabaseHandler.getInstance().handleEditOperation(bookModel);
+    			if(handleEditOperation) {
+    	    		Alert alert2=new Alert(AlertType.INFORMATION);
+    	    		alert2.setTitle("Edit Success");
+    	    		alert2.setContentText("Book Details Updated Successfully");
+    	    		alert2.showAndWait();
+    				
+    			}else {
+	    			Alert alert=new Alert(AlertType.ERROR);
+	    			alert.setTitle("Book Edit");
+	    			alert.setContentText("Save Failed. Please try Later");
+	    			alert.showAndWait();
+    			}
+    		return;
+    	}
     	try {
 			String bookJson = mapper.writeValueAsString(bookModel);
 			Document document = Document.parse(bookJson);
@@ -129,7 +142,7 @@ public class LibraryAddBookController implements Initializable {
 		bookId.setText(model.getBookId());
 		bookName.setText(model.getBookTitle());
 		author.setText(model.getAuthor());
-		author.setText(model.getPublisher());
+		publisher.setText(model.getPublisher());
 		
 		bookId.setEditable(false);
 		

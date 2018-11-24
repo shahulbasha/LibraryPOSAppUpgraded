@@ -24,6 +24,7 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#deleteBookfromView" text="Delete" />
                   <MenuItem mnemonicParsing="false" onAction="#editBook" text="Edit" />
+                  <MenuItem mnemonicParsing="false" onAction="#refreshView" text="Refresh" />
               </items>
             </ContextMenu>
          </contextMenu>

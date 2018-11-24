@@ -22,6 +22,8 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#deleteMemberfromView" text="Delete Member" />
+                  <MenuItem mnemonicParsing="false" onAction="#editMemberDetails" text="Edit Member" />
+                  <MenuItem mnemonicParsing="false" onAction="#refreshView" text="Refresh" />
               </items>
             </ContextMenu>
          </contextMenu>

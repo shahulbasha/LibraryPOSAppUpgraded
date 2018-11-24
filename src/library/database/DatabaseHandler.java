@@ -13,7 +13,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 import library.model.BookModel;
 import library.model.MemberModel;
@@ -160,15 +162,35 @@ public class DatabaseHandler {
 	public boolean isBookAlreadyIssued(BookModel model) {
 		MongoCollection<Document> issueBookCollection = setUpIssueBookCollection();
 		long count = issueBookCollection.count(eq("bookId",model.getBookId()));
+		System.out.println(count+" that much");
 		if(count>0) {
 			return true;
 		}
 		return false;
 	}
 
-	public void handleEditOperation(BookModel bookModel) {
+	public boolean handleEditOperation(BookModel bookModel) {
 		MongoCollection<Document> bookCollection = setUpBookCollection();
 		//bookCollection.updateMany(eq("bookId",bookModel.getBookId()),new Document("bookTitle",bookModel.getBookTitle(),"author",bookModel.getAuthor(),"publisher",bookModel.getPublisher()),new UpdateOptions().upsert(true));
+		
+		//UpdateResult updateMany = bookCollection.updateMany(eq("bookId",bookModel.getBookId()),new Document("bookTitle",bookModel.getBookTitle()).append("author", bookModel.getAuthor()).append("publisher", bookModel.getPublisher()));
+		
+		UpdateResult updateMany = bookCollection.updateMany(eq("bookId",bookModel.getBookId()),Updates.combine(Updates.set("bookTitle", bookModel.getBookTitle()),Updates.set("author", bookModel.getAuthor()),Updates.set("publisher", bookModel.getPublisher())));
+		
+		if(updateMany.getModifiedCount()==1) {
+			return true;
+		}
+		return false;
+		
+	}
+
+	public boolean editMember(MemberModel memberModel) {
+		MongoCollection<Document> memberCollection = setUpMemberCollection();
+		UpdateResult updateMany = memberCollection.updateMany(eq("memberId",memberModel.getMemberId()), Updates.combine(Updates.set("memberName", memberModel.getMemberName()),Updates.set("phoneNo", memberModel.getPhoneNo()),Updates.set("emailId", memberModel.getEmailId())));
+		if(updateMany.getModifiedCount()==1) {
+			return true;
+		}
+		return false;
 		
 	}
 }

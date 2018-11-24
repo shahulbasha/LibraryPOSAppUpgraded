@@ -16,7 +16,9 @@ public class LibraryUtil {
 		System.out.println("stage");
 		
 		try{
-			stage.getIcons().add(new Image("file:G:\\J2EEProjects\\LibraryPOS\\src\\icon.png"));
+			stage.getIcons().add(new Image("file:G:\\J2EEProjects\\LibraryPOS\\src\\resources\\icons\\icon.png"));
+		//	stage.getIcons().add(new Image("@../../../resources/icons/icon.png"));
+			
 		}
 		catch(IllegalArgumentException e) {
 			System.out.println(e.getCause());
