@@ -38,6 +38,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -172,6 +173,8 @@ public class MainController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		JFXDepthManager.setDepth(book_info, 1);
 		JFXDepthManager.setDepth(member_info, 1);
+		
+		initDrawer();
 		
 	}
 	
@@ -463,6 +466,15 @@ public class MainController implements Initializable{
     void handleMenuViewMember(ActionEvent event) {
     	loadWindow("/library/ui/listmember/LibraryMemberList.fxml", "View Member List");
 
+    }
+    
+    private void initDrawer() {
+    	try {
+		VBox toolbar=FXMLLoader.load(getClass().getResource("/library/ui/main/toolbar/Toolbar.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

@@ -13,5 +13,7 @@
 	<classpathentry kind="lib" path="ExternalLibraries/jackson-datatype-joda-2.4.5.jar"/>
 	<classpathentry kind="lib" path="ExternalLibraries/joda-time-2.2.jar"/>
 	<classpathentry kind="lib" path="ExternalLibraries/jBCrypt-0.4.1.jar"/>
+	<classpathentry kind="lib" path="ExternalLibraries/fontawesomefx-commons-8.15.jar"/>
+	<classpathentry kind="lib" path="ExternalLibraries/fontawesomefx-fontawesome-4.7.0-5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

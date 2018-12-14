@@ -31,8 +31,6 @@ public class LoginController implements Initializable {
 	    @FXML
 	    private JFXPasswordField password;
 	    
-	    @FXML
-	    private Label labelText;
 	    
 	    SettingsModel settings;
 
@@ -44,8 +42,7 @@ public class LoginController implements Initializable {
 
 	    @FXML
 	    void handleSave(ActionEvent event) {
-	    	labelText.setText("Library Assistant Login");
-	    	labelText.setStyle("-fx-background-color:black;");
+
 	    	
 	    	settings=SettingsModel.getModel();
 	    	
@@ -55,8 +52,9 @@ public class LoginController implements Initializable {
 	    	
 	    	}
 	    	else {
-		    	labelText.setText("Invalid Credentials");
-		    	labelText.setStyle("-fx-background-color:#bd081c;");
+	    		username.getStyleClass().add("wrong-credentials");
+	    		password.getStyleClass().add("wrong-credentials");
+
 	    	}
 	    	
 

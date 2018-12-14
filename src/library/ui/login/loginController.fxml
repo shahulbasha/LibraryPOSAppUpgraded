@@ -3,36 +3,34 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.control.Label?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="361.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.login.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="361.0" stylesheets="@../../../resources/darktheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.login.LoginController">
    <children>
-      <Label fx:id="labelText" alignment="CENTER" layoutX="1.0" layoutY="1.0" prefHeight="44.0" prefWidth="355.0" stylesheets="@../../../resources/common.css" text="Library Assistant Login" textFill="#fffbfb" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Calibri Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="username" alignment="CENTER" labelFloat="true" layoutX="22.0" layoutY="64.0" prefHeight="32.0" prefWidth="309.0" promptText="Username">
+      <JFXTextField fx:id="username" alignment="CENTER" labelFloat="true" layoutX="66.0" layoutY="93.0" prefHeight="32.0" prefWidth="265.0" promptText="Username">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="password" alignment="CENTER" labelFloat="true" layoutX="22.0" layoutY="122.0" onAction="#handleSave" prefHeight="32.0" prefWidth="309.0" promptText="Password">
+      <JFXPasswordField fx:id="password" alignment="CENTER" labelFloat="true" layoutX="66.0" layoutY="147.0" onAction="#handleSave" prefHeight="32.0" prefWidth="265.0" promptText="Password">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton layoutX="22.0" layoutY="194.0" onAction="#handleSave" prefHeight="44.0" prefWidth="138.0" stylesheets="@../../../resources/common.css" text="Login" AnchorPane.rightAnchor="201.0">
+      <JFXButton layoutX="22.0" layoutY="228.0" onAction="#handleSave" prefHeight="44.0" prefWidth="138.0" styleClass="login-button" stylesheets="@../../../resources/darktheme.css" text="Login" AnchorPane.rightAnchor="201.0">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="193.0" layoutY="194.0" onAction="#handleCancel" prefHeight="44.0" prefWidth="138.0" stylesheets="@../../../resources/common.css" text="Cancel">
+      <JFXButton layoutX="193.0" layoutY="228.0" onAction="#handleCancel" prefHeight="44.0" prefWidth="138.0" styleClass="login-button" stylesheets="@../../../resources/darktheme.css" text="Cancel">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXButton>
+      <FontAwesomeIconView glyphName="LOCK" layoutX="157.0" layoutY="56.0" size="40" />
+      <FontAwesomeIconView glyphName="USER" layoutX="22.0" layoutY="120.0" size="25" />
+      <FontAwesomeIconView glyphName="KEY" layoutX="22.0" layoutY="174.0" size="25" />
    </children>
 </AnchorPane>
