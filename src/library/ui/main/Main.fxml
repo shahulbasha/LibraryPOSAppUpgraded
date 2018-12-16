@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -140,7 +141,7 @@
                                           </JFXTextField>
                                        </top>
                                        <center>
-                                          <ListView fx:id="issueRenewListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                          <ListView fx:id="issueRenewListView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../resources/darktheme.css" BorderPane.alignment="CENTER">
                                              <padding>
                                                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                              </padding>
@@ -165,10 +166,13 @@
                         </Tab>
                      </tabs>
                   </JFXTabPane>
-                  <JFXHamburger layoutY="73.0" prefHeight="28.0" prefWidth="28.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="73.0" />
+                  <JFXHamburger fx:id="hamburger" layoutY="73.0" prefHeight="26.0" prefWidth="28.0" styleClass="jfx-hamburger-icon" stylesheets="@../../../resources/darktheme.css" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="73.0" />
                </children>
             </AnchorPane>
          </center>
+         <right>
+            <JFXDrawer fx:id="drawer" direction="RIGHT" BorderPane.alignment="CENTER" />
+         </right>
       </BorderPane>
    </children>
 </StackPane>

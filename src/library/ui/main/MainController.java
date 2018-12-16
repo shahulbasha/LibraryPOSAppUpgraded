@@ -17,14 +17,20 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,6 +42,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -89,6 +96,12 @@ public class MainController implements Initializable{
 
     @FXML
     private ListView<String> issueRenewListView;
+    
+    @FXML
+    private JFXHamburger hamburger;
+
+    @FXML
+    private JFXDrawer drawer;
     
     boolean isReadyForSubmission=false;
     
@@ -471,6 +484,24 @@ public class MainController implements Initializable{
     private void initDrawer() {
     	try {
 		VBox toolbar=FXMLLoader.load(getClass().getResource("/library/ui/main/toolbar/Toolbar.fxml"));
+		drawer.setSidePane(toolbar);
+		
+		HamburgerSlideCloseTransition task=new HamburgerSlideCloseTransition(hamburger);
+		task.setRate(-1);
+		
+		hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<Event>() {
+			
+			@Override
+			public void handle(Event event) {
+				task.setRate(task.getRate()*-1);
+				if(drawer.isClosed()) {
+					drawer.open();
+				}
+				else {
+					drawer.close();
+				}
+			}
+		});
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

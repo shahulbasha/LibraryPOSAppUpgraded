@@ -88,3 +88,8 @@
 	-fx-background-color: -fx-secondary;
 	-fx-background-radius: 5;
 } 
+
+/*toolbar styling */
+.toolbar{
+	-fx-background-color: -fx-primary;
+}
