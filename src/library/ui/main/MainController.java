@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -17,10 +20,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.eq;
@@ -39,10 +47,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -59,6 +70,9 @@ public class MainController implements Initializable{
 	
     @FXML
     private StackPane rootPane;
+    
+    @FXML
+    private AnchorPane rootAnchorPane;
 
     @FXML
     private MenuItem close;
@@ -93,9 +107,42 @@ public class MainController implements Initializable{
     @FXML
     private JFXTextField bookSubmitRenew;
     
+    @FXML
+    private JFXButton renewButton;
 
     @FXML
-    private ListView<String> issueRenewListView;
+    private JFXButton submissionButton;
+
+/*    @FXML
+    private ListView<String> issueRenewListView;*/
+    
+    @FXML
+    private Text memberNameHolder;
+
+    @FXML
+    private Text memberEmailHolder;
+
+    @FXML
+    private Text memberContactHolder;
+
+    @FXML
+    private Text bookNameHolder;
+
+    @FXML
+    private Text bookAuthorHolder;
+
+    @FXML
+    private Text bookPublisherHolder;
+
+    @FXML
+    private Text issueDateHolder;
+
+    @FXML
+    private Text daysHolder;
+
+    @FXML
+    private Text fineHolder;
+
     
     @FXML
     private JFXHamburger hamburger;
@@ -103,35 +150,11 @@ public class MainController implements Initializable{
     @FXML
     private JFXDrawer drawer;
     
-    boolean isReadyForSubmission=false;
+    @FXML
+    private HBox submissionDataContainer;
     
+    boolean isReadyForSubmission=false;
 
-
-	@FXML
-    void loadAddBook(ActionEvent event) {
-
-		loadWindow("/library/ui/addbook/LibraryAddBook.fxml", "Add New Book");
-    }
-
-    @FXML
-    void loadAddMember(ActionEvent event) {
-		loadWindow("/library/ui/addmember/LibraryAddMember.fxml", "Add New Member");
-    }
-
-    @FXML
-    void loadBookList(ActionEvent event) {
-    	loadWindow("/library/ui/listbook/LibraryBookList.fxml", "View Book List");
-    }
-
-    @FXML
-    void loadMemberList(ActionEvent event) {
-    	loadWindow("/library/ui/listmember/LibraryMemberList.fxml", "View Member List");
-    }
-
-    @FXML
-    void loadSettings(ActionEvent event) {
-    	loadWindow("/library/settings/settings.fxml", "Settings");
-    }
     
     @FXML
     void loadMemberInfo(ActionEvent event) {
@@ -152,6 +175,7 @@ public class MainController implements Initializable{
 
 			memberName.setText("No such Member Available");
 			memberContact.setText("");
+			memberId.clear();
     	}
     	}
     }
@@ -178,6 +202,8 @@ public class MainController implements Initializable{
 			bookName.setText("No such Book Available");
 			bookAuthor.setText("");
 			bookStatus.setText("");
+			bookId.clear();
+			
     	}
     	}
     }
@@ -191,23 +217,7 @@ public class MainController implements Initializable{
 		
 	}
 	
-	void loadWindow(String loc,String title) {
-		try {
-			System.out.println(loc+title);
-			Parent root=FXMLLoader.load(getClass().getResource(loc));
-			Stage stage=new Stage(StageStyle.DECORATED);
-			Scene scene=new Scene(root);
-			stage.setTitle(title);
-			stage.setScene(scene);
-			stage.show();
-			
-			LibraryUtil.setStageIcon(stage);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+
 	
 
     @FXML
@@ -217,6 +227,8 @@ public class MainController implements Initializable{
     	String bookIdValue=bookId.getText();
     	String memberIdValue=memberId.getText();
     	
+    	//if(bookName.getText().equalsIgnoreCase("No Such Book Available")|| memberName.getText().equalsIgnoreCase("No Such Member Available"))
+    	if(!bookIdValue.isEmpty() && !memberIdValue.isEmpty()) {
     	IssueBookModel ibModel=new IssueBookModel();
     	ibModel.setBookId(bookIdValue);
     	ibModel.setMemberId(memberIdValue);
@@ -256,7 +268,6 @@ public class MainController implements Initializable{
 		    	}
 				
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		
@@ -268,13 +279,19 @@ public class MainController implements Initializable{
     		
     	}
     	
-    	
+    	}
+    	else {
+    		//Alert
+    		
+    	}
 
     }
     
     @FXML
     void loadBookSubmitRenewInfo(ActionEvent event) {
     	isReadyForSubmission=false;
+    	
+    	clearEntries();
         ObservableList<String> issueRenewData=FXCollections.observableArrayList();
         
     	String bookId=bookSubmitRenew.getText();
@@ -289,16 +306,36 @@ public class MainController implements Initializable{
 
     	try {
         	Document doc = issueBookCollection.find(eq("bookId",bookId)).first();
-        //	System.out.println(doc.toJson());
         	Document doc1 = bookCollection.find(eq("bookId",bookId)).first();
-        	System.out.println("****************************************");
+        	
+        	if(doc1!=null) {
+        	
+    			if(doc!=null) {
 			IssueBookModel issueBook = mapper.readValue(doc.toJson(), IssueBookModel.class);
 			Document doc2 = memberCollection.find(eq("memberId",issueBook.getMemberId())).first();
+        	
+
+
 			MemberModel memberModel = mapper.readValue(doc2.toJson(),MemberModel.class);
 			BookModel bookModel = mapper.readValue(doc1.toJson(),BookModel.class);
 			
+			memberNameHolder.setText(memberModel.getMemberName());
+			memberEmailHolder.setText(memberModel.getEmailId());
+			memberContactHolder.setText(memberModel.getPhoneNo());
+			bookAuthorHolder.setText(bookModel.getAuthor());
+			bookPublisherHolder.setText(bookModel.getPublisher());
+			bookNameHolder.setText(bookModel.getBookTitle());
 			
-			issueRenewData.add("Issue Date and Time is "+issueBook.getDate().toString());
+
+			LocalDate localDate=LocalDate.now();
+			LocalDate date=issueBook.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Period period=Period.between(localDate, date);
+			
+			issueDateHolder.setText(date.toString());
+			daysHolder.setText(String.valueOf(period.getDays()));
+			fineHolder.setText("Not Supported Yet");
+			
+/*			issueRenewData.add("Issue Date and Time is "+issueBook.getDate().toString());
 			issueRenewData.add("Renew Count : "+issueBook.getRenewCount());
 			issueRenewData.add("BOOK INFORMATION :");
 			issueRenewData.add("	Book ID : "+bookModel.getBookId());
@@ -308,25 +345,100 @@ public class MainController implements Initializable{
 			issueRenewData.add("MEMBER INFORMATION :");
 			issueRenewData.add("	Member ID : "+issueBook.getMemberId());
 			issueRenewData.add("	Member Name : "+memberModel.getMemberName());
-			issueRenewData.add("	Member Contact : "+memberModel.getEmailId());
+			issueRenewData.add("	Member Contact : "+memberModel.getEmailId());*/
 			
-			issueRenewListView.getItems().setAll(issueRenewData);
+		//	issueRenewListView.getItems().setAll(issueRenewData);
 			isReadyForSubmission=true;
+			disableControls(false);
+			submissionDataContainer.setOpacity(1);
+        	}
+			else {
+				BoxBlur blur=new BoxBlur(3, 3, 3);
+				
+				JFXDialogLayout layout=new JFXDialogLayout();
+				JFXButton button=new JFXButton("Okay");
+				JFXDialog dialog=new JFXDialog(rootPane, layout, JFXDialog.DialogTransition.TOP);
+
+			//	button.getStyleClass().add("dialog-button");
+				button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->{
+					dialog.close();
+				});
+				
+				layout.setHeading(new Text("This book is not assigned to any member"));
+				layout.setActions(button);
+				button.getStyleClass().add("dialog-button");
+				dialog.setOnDialogClosed((JFXDialogEvent jfxEvent) -> {
+					rootAnchorPane.setEffect(null);
+				});
+				dialog.show();
+				rootAnchorPane.setEffect(blur);
+			}
+        	}
+        	else {
+        		
+        		BoxBlur blur=new BoxBlur(3, 3, 3);
+        		
+				JFXDialogLayout layout=new JFXDialogLayout();
+				
+				JFXDialog dialog=new JFXDialog(rootPane, layout, JFXDialog.DialogTransition.TOP);
+				JFXButton button=new JFXButton("Okay");
+				//button.getStyleClass().add("dialog-button");
+				button.addEventHandler(MouseEvent.MOUSE_CLICKED,(MouseEvent mouseEvent)->{
+					dialog.close();
+				});
+				
+				layout.setHeading(new Text("No such book exists in our records"));
+				layout.setActions(button);
+				button.getStyleClass().add("dialog-button");
+				dialog.setOnDialogClosed((JFXDialogEvent jfxEvent) -> {
+					rootAnchorPane.setEffect(null);
+				});
+				dialog.show();
+				rootAnchorPane.setEffect(blur);
+        		
+        	}
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
+
     	
 
     }
     
-    @FXML
+    private void clearEntries() {
+    	memberNameHolder.setText("");
+    	memberContactHolder.setText("");
+    	memberEmailHolder.setText("");
+    	bookAuthorHolder.setText("");
+    	bookNameHolder.setText("");
+    	bookPublisherHolder.setText("");
+    	issueDateHolder.setText("");
+    	daysHolder.setText("");
+    	fineHolder.setText("");
+		
+    	disableControls(true);
+    	submissionDataContainer.setOpacity(0);
+	}
+    
+    private void disableControls(boolean isDisable) {
+    	
+    	if(isDisable) {
+    		renewButton.setDisable(true);
+    		submissionButton.setDisable(true);
+    	}
+    	else {
+    		renewButton.setDisable(false);
+    		submissionButton.setDisable(false);
+    	}
+    }
+
+
+	@FXML
     void loadOnSubmission(ActionEvent event) {
     	System.out.println(isReadyForSubmission);
     	if(isReadyForSubmission) {
@@ -357,7 +469,7 @@ public class MainController implements Initializable{
         		alert3.showAndWait();
     		}
     		isReadyForSubmission=false;
-    		issueRenewListView.getItems().clear();
+    	//	issueRenewListView.getItems().clear();
     		bookSubmitRenew.clear();
     		
     	}
@@ -400,21 +512,18 @@ public class MainController implements Initializable{
 	    		alert2.setContentText("Book Renewed successfully");
 	    		alert2.showAndWait();
 			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
         		Alert alert3=new Alert(AlertType.ERROR);
         		alert3.setTitle("Book Renew");
         		alert3.setContentText("Book Renewal failed. Please try again later");
         		alert3.showAndWait();
 			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
         		Alert alert3=new Alert(AlertType.ERROR);
         		alert3.setTitle("Book Renew");
         		alert3.setContentText("Book Renewal failed. Please try again later");
         		alert3.showAndWait();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
         		Alert alert3=new Alert(AlertType.ERROR);
         		alert3.setTitle("Book Renew");
@@ -437,6 +546,8 @@ public class MainController implements Initializable{
     }
     
     
+    
+    // Menu bar Functions
     @FXML
     void handleClose(ActionEvent event) {
     	((Stage)rootPane.getScene().getWindow()).close();
@@ -446,13 +557,13 @@ public class MainController implements Initializable{
     @FXML
     void handleMenuAddBook(ActionEvent event) {
     	
-    	loadWindow("/library/ui/addbook/LibraryAddBook.fxml", "Add New Book");
+    	LibraryUtil.loadWindow(getClass().getResource("/library/ui/addbook/LibraryAddBook.fxml"),"Add New Book",null);
     	
     }
 
     @FXML
     void handleMenuAddMember(ActionEvent event) {
-    	loadWindow("/library/ui/addmember/LibraryAddMember.fxml", "Add New Member");
+    	LibraryUtil.loadWindow(getClass().getResource("/library/ui/addmember/LibraryAddMember.fxml"),"Add New Member",null);
 
     }
     
@@ -472,12 +583,12 @@ public class MainController implements Initializable{
 	
     @FXML
     void handleMenuViewBook(ActionEvent event) {
-    	loadWindow("/library/ui/listbook/LibraryBookList.fxml", "View Book List");
+    	LibraryUtil.loadWindow(getClass().getResource("/library/ui/listbook/LibraryBookList.fxml"),"View Book List",null);
     }
 
     @FXML
     void handleMenuViewMember(ActionEvent event) {
-    	loadWindow("/library/ui/listmember/LibraryMemberList.fxml", "View Member List");
+    	LibraryUtil.loadWindow(getClass().getResource("/library/ui/listmember/LibraryMemberList.fxml"),"View Member List",null);
 
     }
     
@@ -486,6 +597,7 @@ public class MainController implements Initializable{
 		VBox toolbar=FXMLLoader.load(getClass().getResource("/library/ui/main/toolbar/Toolbar.fxml"));
 		drawer.setSidePane(toolbar);
 		
+		//HamburgerSlideCloseTransition task=new HamburgerSlideCloseTransition(hamburger);
 		HamburgerSlideCloseTransition task=new HamburgerSlideCloseTransition(hamburger);
 		task.setRate(-1);
 		
@@ -494,6 +606,7 @@ public class MainController implements Initializable{
 			@Override
 			public void handle(Event event) {
 				task.setRate(task.getRate()*-1);
+				task.play();
 				if(drawer.isClosed()) {
 					drawer.open();
 				}
@@ -503,7 +616,6 @@ public class MainController implements Initializable{
 			}
 		});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

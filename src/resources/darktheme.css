@@ -18,26 +18,29 @@
 .button{
 	-fx-text-fill:-fx-primarytext;
 	-fx-background-color: -fx-primary;
+	-fx-border-color: -fx-secondary;
+	-fx-border-radius: 20px;
+	-fx-background-radius: 20px;
+	-fx-font-size:10pt;
 }
 
+.button:hover{
+	-fx-background-color: -fx-secondary;
+	-fx-text-fill: -fx-primary;
+}
 
 .jfx-radio-button{
 	-fx-text-fill:red;
 }
 
 
+.main-text{
+	-fx-fill : -fx-secondary;
+	-fx-font-size: 11pt;
+	-fx-text-alignment: center;
+}
+
 /*specific to login screen */
-
-.login-button{
-	-fx-border-color: -fx-secondary;
-	-fx-border-radius: 20px;
-	-fx-background-radius: 20px;
-}
-
-.login-button:hover{
-	-fx-background-color: -fx-secondary;
-	-fx-text-fill: -fx-primary;
-}
 
 
 .text-field{
@@ -92,4 +95,36 @@
 /*toolbar styling */
 .toolbar{
 	-fx-background-color: -fx-primary;
+}
+
+
+.toolbar-buttons{
+	-fx-background-color: derive(-fx-primary , -30%);
+}
+
+.toolbar-buttons:hover {
+	-fx-background-color:-fx-secondary;
+	-fx-text-fill: 	-fx-primary;
+}
+
+.toolbar-buttons:hover .glyph-icon{
+	-fx-fill:-fx-primary;
+}
+
+
+.gridview{
+	-fx-background-color: derive(-fx-primary,-50%);
+}
+
+
+.dialog-button{
+	-fx-background-color: rgb(36,146,255);
+	-fx-border-color: rgb(36,146,255);
+	-fx-text-fill: white;
+}
+
+.dialog-button:hover{
+	-fx-background-color: -fx-primary;
+	-fx-border-color: -fx-primary;
+	-fx-text-fill:white;
 }
