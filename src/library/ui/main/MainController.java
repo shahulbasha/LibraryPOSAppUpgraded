@@ -7,7 +7,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -237,52 +240,43 @@ public class MainController implements Initializable{
 
     	
     	 DatabaseHandler dBhandler = DatabaseHandler.getInstance();
+     	ObjectMapper mapper=new ObjectMapper();
     	 
-    	Alert alert=new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Issue Confirmation");
-    	alert.setContentText("Are you sure you want to issue the book "+bookIdValue+" to "+memberIdValue+" ?");
-    	Optional<ButtonType> response = alert.showAndWait();
+    	 JFXButton yesButton=new JFXButton("Yes");
+    	 yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->{
+//    			MongoCollection<Document> issueBookCollection = dBhandler.setUpIssueBookCollection();
+     		MongoCollection<Document> bookCollection = dBhandler.setUpBookCollection();
+     		try {
+ 				Document doc = Document.parse(mapper.writeValueAsString(ibModel));
+ 				boolean issueBook = dBhandler.issueBook(doc);
+ 		    	if(issueBook) {
+ 		    		//set Is available to false once book issue
+ 		    		bookCollection.updateOne(eq("bookId",bookIdValue),new Document("$set",new Document("available",false)));
+ 		    		
+ 		    		
+ 		    		JFXButton jfxButton=new JFXButton("Okay");
+ 					LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Issued Successfully", Arrays.asList(jfxButton),"Success");
+ 		    	}else {
+ 		    		JFXButton jfxButton=new JFXButton("Okay");
+ 					LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Could not Issue a book at this time . Please try later", Arrays.asList(jfxButton),"Error");
+ 		    	}
+ 				
+ 			} catch (JsonProcessingException e) {
+ 				e.printStackTrace();
+ 			}
+     		
+     	
+    	 });
+    	 
+    	 JFXButton noButton=new JFXButton("No");
+    	 noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->{
+    		 JFXButton jfxButton=new JFXButton("Okay");
+ 			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Issue Operation cancelled", Arrays.asList(jfxButton),"Cancel");
+     		
+    	 });
+    	 
+    	 LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Are you sure you want to issue the book "+bookIdValue+" to "+memberIdValue+" ?", Arrays.asList(yesButton,noButton),"Issue Confirmation");
     	
-    	ObjectMapper mapper=new ObjectMapper();
-
-
-    	
-    	if(response.get()==ButtonType.OK) {
-    	//	MongoCollection<Document> issueBookCollection = dBhandler.setUpIssueBookCollection();
-    		MongoCollection<Document> bookCollection = dBhandler.setUpBookCollection();
-    		try {
-				Document doc = Document.parse(mapper.writeValueAsString(ibModel));
-				boolean issueBook = dBhandler.issueBook(doc);
-		    	if(issueBook) {
-		    		//set Is available to false once book issue
-		    		bookCollection.updateOne(eq("bookId",bookIdValue),new Document("$set",new Document("available",false)));
-		    		Alert alert1=new Alert(AlertType.INFORMATION);
-		    		alert1.setContentText("Book Issued Successfully");
-		    		alert1.setHeaderText(null);
-		    		alert1.showAndWait();
-		    	}else {
-		    		Alert alert2=new Alert(AlertType.ERROR);
-		    		alert2.setContentText("Could not issue a Book at this time. Please try again later!!");
-		    		alert2.setHeaderText(null);
-		    		alert2.showAndWait(); 		
-		    	}
-				
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-    		
-    	}else {
-    		Alert alert3=new Alert(AlertType.ERROR);
-    		alert3.setContentText("Issue operation Cancelled!!");
-    		alert3.setHeaderText(null);
-    		alert3.showAndWait(); 
-    		
-    	}
-    	
-    	}
-    	else {
-    		//Alert
-    		
     	}
 
     }
@@ -353,48 +347,13 @@ public class MainController implements Initializable{
 			submissionDataContainer.setOpacity(1);
         	}
 			else {
-				BoxBlur blur=new BoxBlur(3, 3, 3);
-				
-				JFXDialogLayout layout=new JFXDialogLayout();
-				JFXButton button=new JFXButton("Okay");
-				JFXDialog dialog=new JFXDialog(rootPane, layout, JFXDialog.DialogTransition.TOP);
-
-			//	button.getStyleClass().add("dialog-button");
-				button.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->{
-					dialog.close();
-				});
-				
-				layout.setHeading(new Text("This book is not assigned to any member"));
-				layout.setActions(button);
-				button.getStyleClass().add("dialog-button");
-				dialog.setOnDialogClosed((JFXDialogEvent jfxEvent) -> {
-					rootAnchorPane.setEffect(null);
-				});
-				dialog.show();
-				rootAnchorPane.setEffect(blur);
+				JFXButton jfxButton=new JFXButton("Okay");
+				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "This book is not issued to any member", Arrays.asList(jfxButton),"Error");
 			}
         	}
         	else {
-        		
-        		BoxBlur blur=new BoxBlur(3, 3, 3);
-        		
-				JFXDialogLayout layout=new JFXDialogLayout();
-				
-				JFXDialog dialog=new JFXDialog(rootPane, layout, JFXDialog.DialogTransition.TOP);
-				JFXButton button=new JFXButton("Okay");
-				//button.getStyleClass().add("dialog-button");
-				button.addEventHandler(MouseEvent.MOUSE_CLICKED,(MouseEvent mouseEvent)->{
-					dialog.close();
-				});
-				
-				layout.setHeading(new Text("No such book exists in our records"));
-				layout.setActions(button);
-				button.getStyleClass().add("dialog-button");
-				dialog.setOnDialogClosed((JFXDialogEvent jfxEvent) -> {
-					rootAnchorPane.setEffect(null);
-				});
-				dialog.show();
-				rootAnchorPane.setEffect(blur);
+				JFXButton jfxButton=new JFXButton("Okay");
+        		LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "No such book exists in our records", Arrays.asList(jfxButton),"Error");
         		
         	}
 		} catch (JsonParseException e) {
@@ -444,42 +403,40 @@ public class MainController implements Initializable{
     	if(isReadyForSubmission) {
     		String bookId=bookSubmitRenew.getText();
     		
-        	Alert alert=new Alert(AlertType.CONFIRMATION);
-        	alert.setTitle("Issue Confirmation");
-        	alert.setContentText("Are you sure you want to submit the book "+bookId);
-        	Optional<ButtonType> response = alert.showAndWait();
-        	
-        	if(response.get()==ButtonType.OK) {
-
-    		MongoCollection<Document> issueBookCollection = DatabaseHandler.getInstance().setUpIssueBookCollection();
-    		MongoCollection<Document> bookCollection = DatabaseHandler.getInstance().setUpBookCollection();
-    		try {
-    		issueBookCollection.deleteOne(eq("bookId",bookId));
-    		bookCollection.updateOne(eq("bookId",bookId), new Document("$set" ,new Document("available",true)));
-    		Alert alert2=new Alert(AlertType.INFORMATION);
-    		alert2.setTitle("Book Submission");
-    		alert2.setContentText("Book Submitted successfully");
-    		alert2.showAndWait();
-
-    		}
-    		catch(Exception e) {
-        		Alert alert3=new Alert(AlertType.ERROR);
-        		alert3.setTitle("Book Submission");
-        		alert3.setContentText("Book Submission failed. Please try again later");
-        		alert3.showAndWait();
-    		}
-    		isReadyForSubmission=false;
-    	//	issueRenewListView.getItems().clear();
-    		bookSubmitRenew.clear();
     		
-    	}
+    		JFXButton yesButton=new JFXButton("Yes");
+    		yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->{
+    			MongoCollection<Document> issueBookCollection = DatabaseHandler.getInstance().setUpIssueBookCollection();
+        		MongoCollection<Document> bookCollection = DatabaseHandler.getInstance().setUpBookCollection();
+        		try {
+        		issueBookCollection.deleteOne(eq("bookId",bookId));
+        		bookCollection.updateOne(eq("bookId",bookId), new Document("$set" ,new Document("available",true)));
+        		JFXButton jfxButton=new JFXButton("Okay");
+    			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Submitted Successfully", Arrays.asList(jfxButton),"Information");
+        		}
+        		catch(Exception e) {
+        			JFXButton jfxButton=new JFXButton("Okay");
+    				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Submission failed. Please try again later ", Arrays.asList(jfxButton),"Error");
+        		}
+        		isReadyForSubmission=false;
+        	//	issueRenewListView.getItems().clear();
+        		bookSubmitRenew.clear();
+    			
+    		});
+    		
+    		JFXButton noButton=new JFXButton("No");
+    		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->{
+    			JFXButton jfxButton=new JFXButton("Okay");
+    			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a book to submit and try again", Arrays.asList(jfxButton),"Error");
+    		});
+    		
+    		
+    		LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Are you sure you want to submit the book "+bookId, Arrays.asList(yesButton,noButton), "Return Confirmation");        	
 
     	}
     	else {
-    		Alert alert1=new Alert(AlertType.ERROR);
-    		alert1.setTitle("Book Submission");
-    		alert1.setContentText("Please select a book to submit and try again later");
-    		alert1.showAndWait();
+    		JFXButton jfxButton=new JFXButton("Okay");
+			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a book to submit and try again", Arrays.asList(jfxButton),"Error");
     		return;
     	}
     	
@@ -489,17 +446,17 @@ public class MainController implements Initializable{
     void loadRenew(ActionEvent event) {
     	
 		if(isReadyForSubmission) {
-    	Alert alert=new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Renew Confirmation");
-    	alert.setContentText("Are you sure you want to renew the book "+bookSubmitRenew.getText());
-    	Optional<ButtonType> response = alert.showAndWait();
+			
     	ObjectMapper mapper=new ObjectMapper();
     	
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setLenient(false);
         String formattedDate = sdf.format(new Date());
-    	
-    	if(response.get()==ButtonType.OK) {
+        
+        
+        JFXButton yesButton=new JFXButton("Yes");
+        yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->{
+
     		MongoCollection<Document> issueBookCollection = DatabaseHandler.getInstance().setUpIssueBookCollection();
     		Document doc = issueBookCollection.find(eq("bookId",bookSubmitRenew.getText())).first();
     		IssueBookModel model;
@@ -507,38 +464,38 @@ public class MainController implements Initializable{
 				model = mapper.readValue(doc.toJson(), IssueBookModel.class);
 				issueBookCollection.updateOne(eq("bookId",bookSubmitRenew.getText()),new Document("$set",new Document("date",formattedDate).append("renewCount", model.getRenewCount()+1)));
 				
-	    		Alert alert2=new Alert(AlertType.INFORMATION);
-	    		alert2.setTitle("Book Renew");
-	    		alert2.setContentText("Book Renewed successfully");
-	    		alert2.showAndWait();
+				JFXButton jfxButton=new JFXButton("Okay");
+				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Renewed Successfully", Arrays.asList(jfxButton),"Success");
 			} catch (JsonParseException e) {
 				e.printStackTrace();
-        		Alert alert3=new Alert(AlertType.ERROR);
-        		alert3.setTitle("Book Renew");
-        		alert3.setContentText("Book Renewal failed. Please try again later");
-        		alert3.showAndWait();
+				JFXButton jfxButton=new JFXButton("Okay");
+				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Renewal failed. Please try again later", Arrays.asList(jfxButton),"Error");
 			} catch (JsonMappingException e) {
 				e.printStackTrace();
-        		Alert alert3=new Alert(AlertType.ERROR);
-        		alert3.setTitle("Book Renew");
-        		alert3.setContentText("Book Renewal failed. Please try again later");
-        		alert3.showAndWait();
+				JFXButton jfxButton=new JFXButton("Okay");
+				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Renewal failed. Please try again later", Arrays.asList(jfxButton),"Error");
 			} catch (IOException e) {
 				e.printStackTrace();
-        		Alert alert3=new Alert(AlertType.ERROR);
-        		alert3.setTitle("Book Renew");
-        		alert3.setContentText("Book Renewal failed. Please try again later");
-        		alert3.showAndWait();
+				JFXButton jfxButton=new JFXButton("Okay");
+				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Renewal failed. Please try again later", Arrays.asList(jfxButton),"Error");
 			}
     		
     		
-    	}
+    	
+        });
+    	
+        JFXButton noButton=new JFXButton("No");
+        noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->{
+        	JFXButton jfxButton=new JFXButton("Okay");
+			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a Book to Renew", Arrays.asList(jfxButton),"");
+    		
+        });
+        LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Are you sure you want to renew the book "+bookSubmitRenew.getText(), Arrays.asList(yesButton,noButton),"Confirmation" );
+    	
 		}
 		else {
-    		Alert alert1=new Alert(AlertType.ERROR);
-    		alert1.setTitle("Book Renewal");
-    		alert1.setContentText("Please select a book to renew");
-    		alert1.showAndWait();
+			JFXButton jfxButton=new JFXButton("Okay");
+			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a Book to Renew", Arrays.asList(jfxButton),"");
     		return;
 			
 		}
