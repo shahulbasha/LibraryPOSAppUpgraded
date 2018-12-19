@@ -47,12 +47,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
@@ -76,6 +78,9 @@ public class MainController implements Initializable{
     
     @FXML
     private AnchorPane rootAnchorPane;
+    
+    @FXML
+    private Tab bookIssueTab;
 
     @FXML
     private MenuItem close;
@@ -157,10 +162,18 @@ public class MainController implements Initializable{
     private HBox submissionDataContainer;
     
     boolean isReadyForSubmission=false;
+    
+    PieChart bookChart;
+    PieChart memberChart;
+    @FXML
+    private StackPane bookInfoStackPane;
+    @FXML
+    private StackPane memberInfoContainer;
 
     
     @FXML
     void loadMemberInfo(ActionEvent event) {
+    	showCharts(false);
     	ObjectMapper mapper=new ObjectMapper();
     	String text = memberId.getText();
     	if(text!=null && !text.isEmpty()) {
@@ -186,6 +199,7 @@ public class MainController implements Initializable{
     
     @FXML
     void loadBookInfo(ActionEvent event) {
+    	showCharts(false);
     	ObjectMapper mapper=new ObjectMapper();
     	String text = bookId.getText();
     	if(text!=null && !text.isEmpty()) {
@@ -217,15 +231,33 @@ public class MainController implements Initializable{
 		JFXDepthManager.setDepth(member_info, 1);
 		
 		initDrawer();
+		initCharts();
 		
 	}
 	
 
 	
 
-    @FXML
-    void loadIssueBook(ActionEvent event) {
+    private void initCharts() {
+    	bookChart=new PieChart(DatabaseHandler.getInstance().getBookStatistics());
+    	bookInfoStackPane.getChildren().add(bookChart);
 
+		memberChart=new PieChart(DatabaseHandler.getInstance().getMemberStatistics());
+		memberInfoContainer.getChildren().add(memberChart);
+		
+		bookIssueTab.setOnSelectionChanged((event)->{
+			clearIssueEntries();
+			if(bookIssueTab.isSelected()) {
+			refreshGraphs();
+			}
+		});
+	}
+
+
+	@FXML
+    void loadIssueBook(ActionEvent event) {
+		
+		
     
     	String bookIdValue=bookId.getText();
     	String memberIdValue=memberId.getText();
@@ -256,9 +288,12 @@ public class MainController implements Initializable{
  		    		
  		    		JFXButton jfxButton=new JFXButton("Okay");
  					LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Issued Successfully", Arrays.asList(jfxButton),"Success");
+ 					clearIssueEntries();
+ 					refreshGraphs();
  		    	}else {
  		    		JFXButton jfxButton=new JFXButton("Okay");
  					LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Could not Issue a book at this time . Please try later", Arrays.asList(jfxButton),"Error");
+ 					clearIssueEntries();
  		    	}
  				
  			} catch (JsonProcessingException e) {
@@ -272,6 +307,7 @@ public class MainController implements Initializable{
     	 noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->{
     		 JFXButton jfxButton=new JFXButton("Okay");
  			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Issue Operation cancelled", Arrays.asList(jfxButton),"Cancel");
+ 			clearIssueEntries();
      		
     	 });
     	 
@@ -286,6 +322,7 @@ public class MainController implements Initializable{
     	isReadyForSubmission=false;
     	
     	clearEntries();
+
         ObservableList<String> issueRenewData=FXCollections.observableArrayList();
         
     	String bookId=bookSubmitRenew.getText();
@@ -417,10 +454,12 @@ public class MainController implements Initializable{
         		catch(Exception e) {
         			JFXButton jfxButton=new JFXButton("Okay");
     				LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Book Submission failed. Please try again later ", Arrays.asList(jfxButton),"Error");
+    				clearEntries();
         		}
         		isReadyForSubmission=false;
         	//	issueRenewListView.getItems().clear();
         		bookSubmitRenew.clear();
+        		clearEntries();
     			
     		});
     		
@@ -428,6 +467,7 @@ public class MainController implements Initializable{
     		noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->{
     			JFXButton jfxButton=new JFXButton("Okay");
     			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a book to submit and try again", Arrays.asList(jfxButton),"Error");
+    			clearEntries();
     		});
     		
     		
@@ -437,6 +477,7 @@ public class MainController implements Initializable{
     	else {
     		JFXButton jfxButton=new JFXButton("Okay");
 			LibraryUtil.showMaterialDialog(rootPane, rootAnchorPane, "Please select a book to submit and try again", Arrays.asList(jfxButton),"Error");
+			clearEntries();
     		return;
     	}
     	
@@ -575,6 +616,36 @@ public class MainController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    private void clearIssueEntries() {
+    	bookId.clear();
+    	memberId.clear();
+    	memberName.setText("");
+    	memberContact.setText("");
+    	bookName.setText("");
+    	bookAuthor.setText("");
+    	bookStatus.setText("");
+    	
+    	showCharts(true);
+    	
+    }
+    
+    private void showCharts(boolean status) {
+    	
+    	if(status) {
+    		bookChart.setOpacity(1);
+    		memberChart.setOpacity(1);
+    	}
+    	else {
+    		bookChart.setOpacity(0);
+    		memberChart.setOpacity(0);
+    	}
+    }
+    
+    private void refreshGraphs() {
+    	memberChart.setData(DatabaseHandler.getInstance().getMemberStatistics());
+    	bookChart.setData(DatabaseHandler.getInstance().getBookStatistics());
     }
 
 }

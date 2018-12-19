@@ -29,7 +29,7 @@
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXButton>
-      <FontAwesomeIconView glyphName="LOCK" layoutX="157.0" layoutY="56.0" size="40" />
+      <FontAwesomeIconView glyphName="LOCK" layoutX="168.0" layoutY="56.0" size="40" />
       <FontAwesomeIconView glyphName="USER" layoutX="22.0" layoutY="120.0" size="25" />
       <FontAwesomeIconView glyphName="KEY" layoutX="22.0" layoutY="174.0" size="25" />
    </children>

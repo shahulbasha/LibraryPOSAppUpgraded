@@ -128,3 +128,19 @@
 	-fx-border-color: -fx-primary;
 	-fx-text-fill:white;
 }
+
+
+/*chart styling */
+.data0.chart-pie{
+	-fx-pie-color:-fx-secondary;
+	-fx-border-color:derive(-fx-secondary,20%)
+}
+
+.data1.chart-pie{
+	-fx-pie-color:derive(blue,-20%);
+	-fx-border-color:derive(blue,20%)
+}
+
+.chart-pie-label{
+	-fx-fill: -fx-secondary;
+}

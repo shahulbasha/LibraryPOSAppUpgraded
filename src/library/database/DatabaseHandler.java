@@ -2,6 +2,8 @@ package library.database;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.Observable;
+
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -17,6 +19,9 @@ import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import library.model.BookModel;
 import library.model.MemberModel;
 
@@ -192,5 +197,36 @@ public class DatabaseHandler {
 		}
 		return false;
 		
+	}
+	
+	
+	public ObservableList<PieChart.Data> getBookStatistics(){
+		ObservableList<PieChart.Data> bookChart=FXCollections.observableArrayList();
+		try {
+			long bookCount=setUpBookCollection().count();
+			long issuedBookCount=setUpIssueBookCollection().count();
+		bookChart.add(new PieChart.Data("Total Books "+"-"+bookCount, bookCount));
+		bookChart.add(new PieChart.Data("Issued Books "+"-"+issuedBookCount,issuedBookCount ));
+		}
+		catch(Exception e) {
+			
+		}
+		return bookChart;
+		
+	}
+	
+	public ObservableList<PieChart.Data> getMemberStatistics(){
+		
+		ObservableList<PieChart.Data> memberChart=FXCollections.observableArrayList();
+		try {
+			long memberCount=setUpMemberCollection().count();
+			long issueCount=setUpIssueBookCollection().count();
+			memberChart.add(new PieChart.Data("Total Members "+"-"+memberCount, memberCount));
+			memberChart.add(new PieChart.Data("Members with Books "+"-"+issueCount, issueCount));
+		}
+		catch(Exception e) {
+			
+		}
+		return memberChart;
 	}
 }
