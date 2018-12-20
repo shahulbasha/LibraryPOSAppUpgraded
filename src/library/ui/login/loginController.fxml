@@ -9,12 +9,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="361.0" stylesheets="@../../../resources/darktheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.login.LoginController">
    <children>
-      <JFXTextField fx:id="username" alignment="CENTER" labelFloat="true" layoutX="66.0" layoutY="93.0" prefHeight="32.0" prefWidth="265.0" promptText="Username">
+      <JFXTextField fx:id="username" alignment="TOP_LEFT" labelFloat="true" layoutX="66.0" layoutY="93.0" prefHeight="32.0" prefWidth="265.0" promptText="Username">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="password" alignment="CENTER" labelFloat="true" layoutX="66.0" layoutY="147.0" onAction="#handleSave" prefHeight="32.0" prefWidth="265.0" promptText="Password">
+      <JFXPasswordField fx:id="password" alignment="TOP_LEFT" labelFloat="true" layoutX="66.0" layoutY="147.0" onAction="#handleSave" prefHeight="32.0" prefWidth="265.0" promptText="Password">
          <font>
             <Font name="Calibri Bold" size="14.0" />
          </font>

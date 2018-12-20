@@ -7,35 +7,34 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.addmember.LibraryAddMemberController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="418.0" stylesheets="@../../../resources/darktheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.addmember.LibraryAddMemberController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXTextField fx:id="memberId" labelFloat="true" promptText="Member Id" stylesheets="@addMember.css">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </JFXTextField>
             <JFXTextField fx:id="memberName" labelFloat="true" promptText="Member Name" stylesheets="@addMember.css">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </JFXTextField>
             <JFXTextField fx:id="phoneNo" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="Phone No" stylesheets="@addMember.css">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </JFXTextField>
             <JFXTextField fx:id="emailId" labelFloat="true" layoutX="10.0" layoutY="35.0" promptText="Email" stylesheets="@addMember.css">
                <VBox.margin>
-                  <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </JFXTextField>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <JFXButton onAction="#onAdd" prefHeight="71.0" prefWidth="201.0" stylesheets="@addMember.css" text="Add" />
-                  <JFXButton layoutX="10.0" layoutY="10.0" onAction="#onCancel" prefHeight="69.0" prefWidth="191.0" stylesheets="@addMember.css" text="Cancel">
+                  <JFXButton onAction="#onAdd" prefHeight="46.0" prefWidth="109.0" text="Add" />
+                  <JFXButton layoutX="10.0" layoutY="10.0" onAction="#onCancel" prefHeight="48.0" prefWidth="106.0" text="Cancel">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

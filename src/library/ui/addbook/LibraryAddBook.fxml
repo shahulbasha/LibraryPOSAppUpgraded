@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.addbook.LibraryAddBookController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="408.0" stylesheets="@../../../resources/darktheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.ui.addbook.LibraryAddBookController">
    <children>
       <VBox layoutX="7.0" layoutY="-48.0" prefHeight="267.0" prefWidth="421.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,7 +22,7 @@
             </JFXTextField>
             <JFXTextField fx:id="bookName" labelFloat="true" promptText="Book Name">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
                   <Font name="Calibri Bold" size="14.0" />
@@ -30,7 +30,7 @@
             </JFXTextField>
             <JFXTextField fx:id="author" labelFloat="true" promptText="Author">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
                   <Font name="Calibri Bold" size="14.0" />
@@ -38,19 +38,19 @@
             </JFXTextField>
             <JFXTextField fx:id="publisher" labelFloat="true" promptText="Publisher">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
                   <Font name="Calibri Bold" size="14.0" />
                </font>
             </JFXTextField>
-            <HBox prefHeight="49.0" prefWidth="413.0">
+            <HBox prefHeight="49.0" prefWidth="413.0" spacing="30.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <JFXButton fx:id="saveButton" layoutX="10.0" layoutY="10.0" onAction="#onSave" prefHeight="56.0" prefWidth="193.0" stylesheets="@addBook.css" text="Save" />
-                  <JFXButton fx:id="cancelButton" onAction="#onCancel" prefHeight="50.0" prefWidth="210.0" stylesheets="@addBook.css" text="Cancel" />
+                  <JFXButton fx:id="saveButton" layoutX="10.0" layoutY="10.0" onAction="#onSave" prefHeight="56.0" prefWidth="193.0" text="Save" />
+                  <JFXButton fx:id="cancelButton" onAction="#onCancel" prefHeight="50.0" prefWidth="210.0" text="Cancel" />
                </children>
             </HBox>
          </children></VBox>
